@@ -22,10 +22,8 @@ public class Client {
                 System.out.println("- To show bookings for specific TrainerID: LISTPT <TrainerID>");
                 System.out.println("- To show bookings for specific ClientID: LISTCLIENT <ClientID>");
                 System.out.println("- To show bookings for specific Date: LISTDAY <YYYY-MM-DD>");
-                System.out.println(
-                        "- To add new booking: ADD <ClientID> <TrainerID> <SpecialismID> <HH:MM-HH:MM> <YYYY-MM-DD>");
-                System.out.println(
-                        "- To update existing booking: UPDATE <existingBookingID> <TrainerID> <SpecialismID> <HH:MM-HH:MM> <YYYY-MM-DD>");
+                System.out.println("- To add new booking: ADD <ClientID> <TrainerID> <SpecialismID> <HH:MM-HH:MM> <YYYY-MM-DD>");
+                System.out.println("- To update existing booking: UPDATE <existingBookingID> <TrainerID> <SpecialismID> <HH:MM-HH:MM> <YYYY-MM-DD>");
                 System.out.println("- To delete booking: DELETE <BookingID>");
                 System.out.println("- To exit from the console application: QUIT or EXIT");
                 System.out.println("COMMAND: ");
@@ -44,29 +42,35 @@ public class Client {
                     System.exit(0);
 
                 } else if (inputString[0].equals("LISTALL")) {
-                    ArrayList<String> allBooking = (ArrayList<String>) objectInputStream.readObject();
-                    ArrayList<Booking> allBookings = new ArrayList();
 
-                    for (int x = 0; x < allBooking.size(); x++) {
-                        String lineText = allBooking.get(x);
+                    if (inputString.length > 1) {
+                        System.out.println(objectInputStream.readObject());
+                    } else {
 
-                        String booking[] = lineText.split("#");
-                        Booking listedBooking = new Booking();
+                        ArrayList<String> allBooking = (ArrayList<String>) objectInputStream.readObject();
+                        ArrayList<Booking> allBookings = new ArrayList();
 
-                        listedBooking.setBookingID(booking[0]);
-                        listedBooking.setCustomerID(booking[1]);
-                        listedBooking.setTrainerID(booking[2]);
-                        listedBooking.setSpecialismID(booking[3]);
-                        listedBooking.setTimeSlot(booking[4]);
-                        listedBooking.setDate(booking[5]);
-                        listedBooking.setDuration(Calculations.getDuration(listedBooking.getTimeSlot()));
+                        for (int x = 0; x < allBooking.size(); x++) {
+                            String lineText = allBooking.get(x);
 
-                        allBookings.add(listedBooking);
+                            String booking[] = lineText.split("#");
+                            Booking listedBooking = new Booking();
+
+                            listedBooking.setBookingID(booking[0]);
+                            listedBooking.setCustomerID(booking[1]);
+                            listedBooking.setTrainerID(booking[2]);
+                            listedBooking.setSpecialismID(booking[3]);
+                            listedBooking.setTimeSlot(booking[4]);
+                            listedBooking.setDate(booking[5]);
+                            listedBooking.setDuration(Calculations.getDuration(listedBooking.getTimeSlot()));
+
+                            allBookings.add(listedBooking);
+
+                        }
+
+                        Display.displayAllBookings(allBookings);
 
                     }
-
-                    Display.displayAllBookings(allBookings);
-
                 } else if (inputString[0].equals("LISTPT")) {
 
                     ArrayList<Booking> bookingsTrainerID = new ArrayList();
@@ -226,3 +230,4 @@ public class Client {
         }
     }
 }
+

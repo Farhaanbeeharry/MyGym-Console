@@ -10,7 +10,7 @@ public class DataImport {
         try {
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking;");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking ORDER BY DateBooked;");
 
             while (resultSet.next()) {
                 String bookingID = resultSet.getString("BookingID");
@@ -48,7 +48,7 @@ public class DataImport {
         try {
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking WHERE TrainerID='" + condition + "';");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking WHERE TrainerID='" + condition + "' ORDER BY DateBooked;");
 
             while (resultSet.next()) {
                 String bookingID = resultSet.getString("BookingID");
@@ -86,7 +86,7 @@ public class DataImport {
         try {
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking WHERE CustomerID='" + condition + "';");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking WHERE CustomerID='" + condition + "' ORDER BY DateBooked;");
 
             while (resultSet.next()) {
                 String bookingID = resultSet.getString("BookingID");
@@ -124,7 +124,7 @@ public class DataImport {
         try {
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking WHERE DateBooked='" + condition + "';");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Booking WHERE DateBooked='" + condition + "' ORDER BY CustomerID;");
 
             while (resultSet.next()) {
                 String bookingID = resultSet.getString("BookingID");
@@ -277,9 +277,9 @@ public class DataImport {
 
     }
 
-    public static int checkExistSpecialismID(String specialismID) {
+    public static int checkExistSpecialismID(String specialismID, String trainerID) {
 
-        int result = -1;
+         int result = -1;
 
         Connection connection = ConnectionManager.getConnection();
 
@@ -287,8 +287,7 @@ public class DataImport {
 
             Statement statement = connection.createStatement();
 
-            ResultSet resultSet = statement
-                    .executeQuery("SELECT EXISTS(SELECT * FROM Specialism where SpecialismID='" + specialismID + "');");
+            ResultSet resultSet = statement.executeQuery("SELECT EXISTS(SELECT * FROM Focus where SpecialismID='" + specialismID + "' && TrainerID='"+ trainerID + "');");
 
             if (resultSet.next()) {
                 result = resultSet.getInt(1);

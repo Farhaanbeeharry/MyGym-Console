@@ -14,7 +14,6 @@ CREATE TABLE Trainer(
 CREATE TABLE Specialism(
 	SpecialismID VARCHAR(5) NOT NULL,
 	SpecialismName VARCHAR(40) NOT NULL,
-	SpecialismFee VARCHAR(4) NOT NULL,
 	PRIMARY KEY (SpecialismID)
 );
 
@@ -30,10 +29,10 @@ CREATE TABLE Customer(
 );
 
 CREATE TABLE Focus(
-	FocusID VARCHAR(7) NOT NULL,
 	TrainerID VARCHAR(5) NOT NULL,
 	SpecialismID VARCHAR(5) NOT NULL,
-	PRIMARY KEY (FocusID),
+	SpecialismFee VARCHAR(4) NOT NULL,
+	PRIMARY KEY (TrainerID, SpecialismID),
 	FOREIGN KEY (TrainerID) REFERENCES Trainer(TrainerID),
 	FOREIGN KEY (SpecialismID) REFERENCES Specialism(SpecialismID)
 );
@@ -60,28 +59,28 @@ INSERT INTO Trainer VALUES
 ('MVS67', 'Vasil', 'Shaw', 55122767, 'M');
 
 INSERT INTO Specialism VALUES
-('WEILO', 'Weight loss', 800),
-('MUSGA', 'Muscle gain', 400),
-('CARFI', 'Cardiovascular fitness', 200),
-('ENSTE', 'Energy, stamina & endurance', 400),
-('SPOPE', 'Sports performance', 500),
-('MUSEF', 'Muscle strength, endurance & flexibilty', 600),
-('COORD', 'Coordination', 200),
-('IMMUN', 'Immunity', 300),
-('STRAN', 'Stress & anxiety', 400),
-('LIBID', 'Libido', 300),
-('ATTRA', 'Attractiveness', 700);
+('WEILO', 'Weight loss'),
+('MUSGA', 'Muscle gain'),
+('CARFI', 'Cardiovascular fitness'),
+('ENSTE', 'Energy, stamina & endurance'),
+('SPOPE', 'Sports performance'),
+('MUSEF', 'Muscle strength, endurance & flexibilty'),
+('COORD', 'Coordination'),
+('IMMUN', 'Immunity'),
+('STRAN', 'Stress & anxiety'),
+('LIBID', 'Libido'),
+('ATTRA', 'Attractiveness');
 
 INSERT INTO Focus VALUES
-('GAFSE89', 'FSE89', 'MUSGA'),
-('TEMLS07', 'MLS07', 'ENSTE'),
-('EFMOM75', 'MOM75', 'MUSEF'),
-('LOFSE89', 'FSE89', 'WEILO'),
-('LOFPB22', 'FPB22', 'WEILO'),
-('RDMUS67', 'MVS67', 'COORD'),
-('GAMLS07', 'MLS07', 'MUSGA'),
-('RAFPJ17', 'FPJ17', 'ATTRA'),
-('FIMUS67', 'MVS67', 'CARFI');
+('FSE89', 'MUSGA', 800),
+('MLS07', 'ENSTE', 400),
+('MOM75', 'MUSEF', 200),
+('FSE89', 'WEILO', 400),
+('FPB22', 'WEILO', 500),
+('MVS67', 'COORD', 600),
+('MLS07', 'MUSGA', 200),
+('FPJ17', 'ATTRA', 300),
+('MVS67', 'CARFI', 700);
 
 INSERT INTO Customer VALUES
 ('FLW35', 'Lacie', 'Watkins', 'F', '2001-08-01', 'Curepipe', 54840435),

@@ -21,21 +21,32 @@ public class ServerRunnable implements Runnable {
                 String[] userInput = (String[]) objectInputStream.readObject();
 
                 if (userInput[0].equals("LISTALL")) {
-                    ArrayList<Booking> allBookings = new ArrayList<Booking>();
-                    allBookings = DataImport.getAllBookings(allBookings);
 
-                    ArrayList<String> returnString = new ArrayList();
+                    if (userInput.length > 1) {
+                        objectOutputStream.writeObject("Too many arguments !\n");
+                        objectOutputStream.reset();
+                    } else {
+                        ArrayList<Booking> allBookings = new ArrayList<Booking>();
+                        allBookings = DataImport.getAllBookings(allBookings);
 
-                    for (int x = 0; x < allBookings.size(); x++) {
+                        ArrayList<String> returnString = new ArrayList();
 
-                        returnString.add(allBookings.get(x).getBookingID() + "#" + allBookings.get(x).getCustomerID()
-                                + "#" + allBookings.get(x).getTrainerID() + "#" + allBookings.get(x).getSpecialismID()
-                                + "#" + allBookings.get(x).getTimeSlot() + "#" + allBookings.get(x).getDate() + "#"
-                                + allBookings.get(x).getDuration());
+                        for (int x = 0; x < allBookings.size(); x++) {
+
+                            returnString.add(allBookings.get(x).getBookingID() + "#"
+                                    + allBookings.get(x).getCustomerID() + "#"
+                                    + allBookings.get(x).getTrainerID() + "#"
+                                    + allBookings.get(x).getSpecialismID() + "#"
+                                    + allBookings.get(x).getTimeSlot() + "#"
+                                    + allBookings.get(x).getDate() + "#"
+                                    + allBookings.get(x).getDuration()
+                            );
+                        }
+
+                        objectOutputStream.writeObject(returnString);
+                        objectOutputStream.reset();
+
                     }
-
-                    objectOutputStream.writeObject(returnString);
-                    objectOutputStream.reset();
                 } else if (userInput[0].equals("LISTPT")) {
 
                     if ((userInput.length == 2) && (userInput[1].length() == 5)) {
@@ -50,8 +61,10 @@ public class ServerRunnable implements Runnable {
                                     + bookingsTrainerID.get(x).getCustomerID() + "#"
                                     + bookingsTrainerID.get(x).getTrainerID() + "#"
                                     + bookingsTrainerID.get(x).getSpecialismID() + "#"
-                                    + bookingsTrainerID.get(x).getTimeSlot() + "#" + bookingsTrainerID.get(x).getDate()
-                                    + "#" + bookingsTrainerID.get(x).getDuration());
+                                    + bookingsTrainerID.get(x).getTimeSlot() + "#"
+                                    + bookingsTrainerID.get(x).getDate() + "#"
+                                    + bookingsTrainerID.get(x).getDuration()
+                            );
                         }
 
                         if (DataImport.checkExistTrainerID(userInput[1]) == 0) {
@@ -76,8 +89,10 @@ public class ServerRunnable implements Runnable {
                                     + bookingsClientID.get(x).getCustomerID() + "#"
                                     + bookingsClientID.get(x).getTrainerID() + "#"
                                     + bookingsClientID.get(x).getSpecialismID() + "#"
-                                    + bookingsClientID.get(x).getTimeSlot() + "#" + bookingsClientID.get(x).getDate()
-                                    + "#" + bookingsClientID.get(x).getDuration());
+                                    + bookingsClientID.get(x).getTimeSlot() + "#"
+                                    + bookingsClientID.get(x).getDate() + "#"
+                                    + bookingsClientID.get(x).getDuration()
+                            );
                         }
 
                         if (DataImport.checkExistClientID(userInput[1]) == 0) {
@@ -99,10 +114,13 @@ public class ServerRunnable implements Runnable {
                         for (int x = 0; x < bookingsDate.size(); x++) {
 
                             returnString.add(bookingsDate.get(x).getBookingID() + "#"
-                                    + bookingsDate.get(x).getCustomerID() + "#" + bookingsDate.get(x).getTrainerID()
-                                    + "#" + bookingsDate.get(x).getSpecialismID() + "#"
-                                    + bookingsDate.get(x).getTimeSlot() + "#" + bookingsDate.get(x).getDate() + "#"
-                                    + bookingsDate.get(x).getDuration());
+                                    + bookingsDate.get(x).getCustomerID() + "#"
+                                    + bookingsDate.get(x).getTrainerID() + "#"
+                                    + bookingsDate.get(x).getSpecialismID() + "#"
+                                    + bookingsDate.get(x).getTimeSlot() + "#"
+                                    + bookingsDate.get(x).getDate() + "#"
+                                    + bookingsDate.get(x).getDuration()
+                            );
                         }
 
                         objectOutputStream.writeObject(returnString);
@@ -162,8 +180,8 @@ public class ServerRunnable implements Runnable {
                         returnMessage = "SpecialismID can have 5 characters only !\n";
                     } else if (!userInput[3].matches("[a-zA-Z0-9]+")) {
                         returnMessage = "SpecialismID should be alphanumeric !\n";
-                    } else if (DataImport.checkExistSpecialismID(userInput[3]) == 0) {
-                        returnMessage = "SpecialismID not found !\n";
+                     } else if (DataImport.checkExistSpecialismID(userInput[3], userInput[2]) == 0) {
+                        returnMessage = "SpecialismID not found for this TrainerID !\n";
                     } else if (Calculations.checkValidTime(userInput[4]) == 1) {
                         returnMessage = "Wrong time format !\n";
                     } else if (Calculations.checkValidTime(userInput[4]) == 2) {
@@ -186,8 +204,7 @@ public class ServerRunnable implements Runnable {
                         returnMessage = "Date should be in the future !\n";
                     } else {
 
-                        int returnValue = DataExport.addBooking(userInput[1], userInput[2], userInput[3], userInput[4],
-                                userInput[5]);
+                        int returnValue = DataExport.addBooking(userInput[1], userInput[2], userInput[3], userInput[4], userInput[5]);
 
                         if (returnValue == 0) {
                             returnMessage = "Booking failed !\n";
@@ -223,8 +240,8 @@ public class ServerRunnable implements Runnable {
                         returnMessage = "SpecialismID can have 5 characters only !\n";
                     } else if (!userInput[3].matches("[a-zA-Z0-9]+")) {
                         returnMessage = "SpecialismID should be alphanumeric !\n";
-                    } else if (DataImport.checkExistSpecialismID(userInput[3]) == 0) {
-                        returnMessage = "SpecialismID not found !\n";
+                     } else if (DataImport.checkExistSpecialismID(userInput[3], userInput[2]) == 0) {
+                        returnMessage = "SpecialismID not found for this TrainerID !\n";
                     } else if (Calculations.checkValidTime(userInput[4]) == 1) {
                         returnMessage = "Wrong time format !\n";
                     } else if (Calculations.checkValidTime(userInput[4]) == 2) {
@@ -245,13 +262,11 @@ public class ServerRunnable implements Runnable {
                         returnMessage = "Wrong Date format !\n";
                     } else if (Calculations.checkValidFutureDate(userInput[5]) == 0) {
                         returnMessage = "Date should be in the future !\n";
-                    } else if (DataImport.checkSameData(userInput[1], userInput[2], userInput[3], userInput[4],
-                            userInput[5]) == 1) {
+                    } else if (DataImport.checkSameData(userInput[1], userInput[2], userInput[3], userInput[4], userInput[5]) == 1) {
                         returnMessage = "Data is same as existing. Update cancelled !\n";
                     } else {
 
-                        int returnValue = DataExport.updateBooking(userInput[1], userInput[2], userInput[3],
-                                userInput[4], userInput[5]);
+                        int returnValue = DataExport.updateBooking(userInput[1], userInput[2], userInput[3], userInput[4], userInput[5]);
 
                         if (returnValue == -1) {
                             returnMessage = "Update failed !\n";
@@ -284,3 +299,4 @@ public class ServerRunnable implements Runnable {
     }
 
 }
+

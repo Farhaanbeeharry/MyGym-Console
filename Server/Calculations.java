@@ -57,6 +57,10 @@ public class Calculations {
             if ((endTime > startBookedTime) && (endTime < endBookedTime)) {
                 check = 1;
             }
+	    
+	    if ((startTime < startBookedTime) && (endTime > endBookedTime)) {
+		check = 1;
+	    }
 
         }
 

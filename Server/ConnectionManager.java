@@ -4,8 +4,8 @@ public class ConnectionManager {
 
     private static String url = "jdbc:mysql://localhost/MyGym";
     private static String driverName = "com.mysql.cj.jdbc.Driver";
-    private static String username = "Farhaan";
-    private static String password = "cst2550";
+    private static String username = "root";
+    private static String password = "";
     private static Connection connection;
 
     public static Connection getConnection() {

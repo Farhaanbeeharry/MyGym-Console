@@ -77,7 +77,7 @@ public class Display {
         for (int x = 0; x < bookingsDate.size(); x++) {
 
             System.out.format("| %20s %20s %20s %20s %20s %20s", bookingsDate.get(x).getBookingID() + "  |",
-                    bookingsDate.get(x).getTrainerID() + "  |", bookingsDate.get(x).getCustomerID() + "  |",
+                    bookingsDate.get(x).getCustomerID() + "  |", bookingsDate.get(x).getTrainerID() + "  |",
                     bookingsDate.get(x).getSpecialismID() + "  |", bookingsDate.get(x).getTimeSlot() + "  |",
                     bookingsDate.get(x).getDuration() + " minutes |");
             System.out.println(" ");
